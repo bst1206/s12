@@ -1,0 +1,426 @@
+1. CHECK
+Does the additional check apply?
+
+2. STYLE
+
+3. BUG
+Apparent resource leak.
+
+4. BUG
+Inconsistent error handling: check for argv validity and error codes.
+
+5. CHECK
+Likely false, but the Length() calculation may be necessary.
+
+6. BUG 
+Missing component permssions check.
+
+7. BUG 
+Missing length validity check.
+
+8. BUG
+Ignored error code (the subsequent check does nothing).
+
+9. STYLE
+Direct return from the loop vs. the break-and-return pattern.  The fact that one
+duplicates the string while the other assigns the pointer directly is suspicious, 
+though.
+
+10. FALSE
+Function-style casts, fooled DejaVu.
+
+11. BUG
+Null pointer check. Also a 'smell' on the unnecessary init of rv.
+
+12. CHECK
+Apparently missing check.  Possibly an identifier renaming bug, too.
+
+13. FALSE
+One iterates forward, the other reverse.  Adaptive change that we misclassified.
+
+14. CHECK
+Likely bug: allocates a new block but does not "remember it for postprocessing."
+
+15. BUG
+Missing IsHTML check.
+
+16. FALSE
+One scrolls a page at a time.  The extra term in the calculation looks suspicious
+to DejaVu because the variable is in scope in the pair fragment.
+
+17. STYLE
+Inlined the error checking variable.  This might normally lose the return value
+(and be a bug) but there's a direct return afterward.
+
+18. SMELL
+Inconsistent warning.
+
+19. CHECK
+Inconsistent initialization (apparently).
+
+20. BUG
+Logic error, appends to the string and then throws it away instead of assigning it.
+
+21. BUG
+Apparently missing the existence check.
+
+22. BUG
+Two bugs: a pointer check and a more serious double-lock bug.
+
+23. CHECK
+Could go either way: requires domain knowledge.
+
+24. BUG
+Unsaved error code coupled with pointless check.
+
+25. FALSE
+Forward vs reverse iteration; fooled DejaVu.  Perhaps we could build a filter for this.
+
+26. BUG
+Could be called a smell, but it's too suspicious: apparently side-effective code is 
+commented out in one fragment.
+
+27. BUG
+Missing check of error code.  (Note that it's the first one, not the last, which we
+don't falsely flag because of our sequence alignment.)
+
+28. CHECK
+Possibly missing case.
+
+29. BUG
+Inconsistent error checking.
+
+30. BUG
+Resource leak!
+
+31. CHECK
+Probably false: looks domain-specific.
+
+32. BUG
+Returns NS_OK when a call fails.
+
+33. FALSE
+One fragment "get"s and the other "set"s.  The structural differences fooled DejaVu.
+
+34. CHECK
+Very suspicious: both count and alloc_len are in scope in both.  (The type difference 
+is a red herring; count/alloc_len is the issue.)
+
+35. BUG 
+Missing null check.
+
+36. FALSE
+"Find first" vs "Find first not" paired methods fooled DejaVu.
+
+37. SMELL
+The error check is there, but it's shadowing the true error code with its own. Why?
+
+38. BUG
+Inconsistent reinitialization of string "urlStr".
+
+39. BUG
+Missing error check.
+
+40. FALSE
+left/right symmetric code fragments.  The fact that both variables are in scope confused
+DejaVu.
+
+41. SMELL
+Inconsistent reinitialization of freed variable.
+
+42. BUG
+Returns NS_OK when a call fails.
+
+43. CHECK
+Inconsistent control flow, but possibly OK.
+
+44. CHECK
+Inconsistent control flow.
+
+45. FALSE
+The comment makes clear that the inconsistency is intentional.
+
+46. SMELL
+Inconsistent logging.
+
+47. SMELL
+Inconsistent logging.
+
+48. BUG
+Inconsistent control flow: the comments suggest that the former (without the return) 
+is correct.
+
+49. FALSE
+Forward vs reverse iteration.
+
+50. CHECK
+Possibly benign due to differing character widths.
+
+51. BUG
+Missing check (the former doesn't check the result of GetAttribute).
+
+52. BUG
+Missing check for msgid validity.
+
+53. STYLE
+Clarified error handling path.
+
+54. FALSE
+Max vs min paired methods.
+
+55. CHECK
+This is very likely a bug.  The parameter to unlock is documented as an "owning statement".
+
+56. CHECK
+Inconsistent reinitialization.
+
+57. BUG
+Missing error check.
+
+58. BUG
+Missing error check and inconsistent control flow.
+
+59. FALSE
+The RecycleSerialNumberPtr call is only apparently needed in the destructors.
+
+60. CHECK
+Likely missing check.
+
+61. BUG
+Unsaved error code.
+
+62. BUG
+Missing second error check.
+
+63. CHECK
+Odd inconsistent control flow, but the fragments have different purposes (fetch v delete).
+
+64. SMELL
+Different styles of error checking that may possibly behave differently.
+
+65. FALSE
+LeftOf/RightOf paired methods.  The structural difference in returning the last element
+confused DejaVu.
+
+66. CHECK
+Inconsistent intialization, but it may be intended.
+
+67. BUG
+Inconsistently applied optimization.
+
+68. SMELL
+Inconsistent use of encapsulating accessor.
+
+69. SMELL
+Missing additional logging code.
+
+70. BUG
+Error condition is fatal in one fragment and nonfatal in the other.
+
+71. SMELL
+Inconsistent logging.
+
+72. CHECK
+Differing constants in completely identical code.
+
+73. CHECK
+Likely OK, but possibly missing function call.
+
+74. CHECK
+Direct return of error code, but one skips the setting of m_logonFailed.
+
+75. SMELL
+Inconsistent but likely equally effective error checking.
+
+76. SMELL
+Pointless reassignment to null.
+
+77. BUG
+Missing error check.
+
+78. CHECK
+Slightly different: one will quit early on error, the other collects error codes and checks
+them simultaneously.
+
+79. CHECK
+Although these are row/column paired methods, the second change that DejaVu reports is likely
+applicable to the paired fragment.
+
+80. BUG
+Missing error check.
+
+81. FALSE
+The reordering, which DejaVu handles well a majority of the time, caused a problem in this
+case.
+
+82. SMELL
+Inconsistent debug output.
+
+83. SMELL
+Assertion is out of sync with the code.
+
+84. BUG
+Returns NS_OK on a failed call.
+
+85. BUG
+Missing error check.
+
+86. CHECK
+Likely false (different contexts and the fragments are adjacent in the original source file) 
+but worth checking.
+
+87. BUG
+Unsaved error code.
+
+88. FALSE
+Checked the source code; the missing initialization occurs before the displayed fragments.
+
+89. SMELL
+Inconsistent initializaton, but apparently harmless.
+
+90. CHECK
+Inconsistent behavior.
+
+91. FALSE
+Forward vs. reverse iteration.
+
+92. BUG
+Missing error check.
+
+93. FALSE
+Forward vs. reverse iteration.
+
+94. CHECK
+The unsaved error codes are likely mistakes, but the other changes may be benign.
+
+95. STYLE
+Pointless initialization.
+
+96. CHECK
+The other check likely applies.
+
+97. SMELL
+An empty code block with a TODO?
+
+98. BUG
+Resource leak.
+
+99. CHECK
+This flag may apply.
+
+100. SMELL
+Return code gets buried.
+
+101. SMELL
+Inconsistent assertion.
+
+102. FALSE
+Min vs. Max paired methods, intentional inconsistency.
+
+103. SMELL
+Normally would be a bug, bug the fragment without the error checking has a comment
+stating that it is intentional.
+
+104. BUG
+The key.isNull() check seems to apply to one, while the auto-increment check would seem
+to apply to the other.
+
+105. FALSE
+Paired methods. One operates on x, one on y, but both access both.
+
+106. CHECK
+Inconsistent use of success macro, but likely benign.
+
+107. BUG
+Unchecked return value
+
+108. BUG
+Missing error check
+
+109. STYLE
+Differing C++ styles of declaration and initialization.
+
+110. FALSE
+The encoder is eventually reused in one fragment but not the other, necessitating the
+inconsistent use of Reset().
+
+111. FALSE
+char vs wchar_t adaptation.  The lack of a "sizeof(char)" created a structural difference,
+but this is commonly done -- the standard requires it to be one.
+
+112. BUG
+Missing check.
+
+113. STYLE
+Use of assignment as expression vs. splitting into two statements.
+
+114. CHECK
+Possible identifier renaming bug, but the fields could be aliased.
+
+115. BUG
+Missing case on error check.
+
+116. STYLE
+Split declaration and initialization.
+
+117. FALSE
+Adaptive changes: one uses a byte buffer and memcpy, the other uses a string and an Assign
+method.
+
+118. CHECK
+Likely identifier renaming bug.
+
+119. FALSE
+Paired get/set methods with overlapping identifiers and statements - confused DejaVu.
+
+120. STYLE
+Implicit vs explicit null check.
+
+121. SMELL
+Inconsistent saving of return value, but it's never used.
+
+122. CHECK
+The first change is benign, but the second is a suspicious missing assignment.
+
+123. BUG
+Resource leak.
+
+124. FALSE
+Same as 117 but two different fragments.
+
+125. STYLE
+Direct return.
+
+126. BUG
+Missing null check of in-use variable.
+
+127. FALSE
+Forward vs. backward iteration.  This seems simple to refactor to eliminate the duplication.
+
+128. FALSE
+One method operates on rows, the other on columns, but both fragments touch both variables, 
+which confused DejaVu.
+
+129. STYLE
+Implicit vs. explicit null checks.
+
+130. CHECK
+Likely identifier renaming bug.
+
+131. BUG
+Missing NS_ADDREF on return value in the more terse second fragment.
+
+132. BUG
+Missing null check on inNode.
+
+133. FALSE
+Inspected code, the differences are very likely intentional.
+
+134. SMELL
+Pointless initialization of rv and different styles of performing the same error checking.
+
+135. SMELL
+Pointless initialization of outType; it is assigned on all other paths in both fragments.
+
+136. CHECK
+This check may apply, but it is not clear.
