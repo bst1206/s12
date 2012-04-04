@@ -29,7 +29,7 @@ public class RNSUtilTest extends TestCase {
 			{
 				moduli[j] = (int)(Math.random()*100+1);
 			}
-			RNSUtil.validateModuli(moduli, true);
+			RNSUtil.isValidModuli(moduli, true);
 		}
 		
 	}
@@ -68,7 +68,7 @@ public class RNSUtilTest extends TestCase {
 		for(int i = 0 ; i < iter ; ++i)
 		{
 			try {
-				moduli = _generateValidModuli();
+				moduli = generateValidModuli();
 				int value = (int)(Math.random()*100);
 				rns.init(value, moduli, true);
 				System.out.println(rns.getConversionStep());
@@ -107,17 +107,17 @@ public class RNSUtilTest extends TestCase {
 	
 	
 	// ------- Test util ------
-	private int[] _generateValidModuli() throws TimeLimitExceededException
+	public static int[] generateValidModuli() throws TimeLimitExceededException
 	{
 		int len = (int)(Math.random()*6) +1;
 		int[] moduli = new int[len];
-		for(int t = 0 ; t < 100 ; ++t)
+		for(int t = 0 ; t < 200 ; ++t)
 		{
 			for(int i = 0 ; i < len ; ++i)
 			{
 				moduli[i] = (int)(Math.random()*100+1);
 			}
-			if(RNSUtil.validateModuli(moduli, false))
+			if(RNSUtil.isValidModuli(moduli, false))
 			{
 				return moduli;
 			}

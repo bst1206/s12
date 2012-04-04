@@ -1,5 +1,9 @@
 import javax.swing.JApplet;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+
+import components.InputPanel;
 
 
 public class main extends JApplet {
@@ -14,6 +18,7 @@ public class main extends JApplet {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				
 				public void run() {
+					setSize(600, 800);
 					_createGUI();
 				}
 			});
@@ -23,6 +28,7 @@ public class main extends JApplet {
 	}
 	
 	private void _createGUI() {
-		
+		InputPanel inputPanel = new InputPanel();
+		add(inputPanel);
 	}
 }

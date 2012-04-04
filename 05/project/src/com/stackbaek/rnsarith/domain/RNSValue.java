@@ -28,15 +28,6 @@ public class RNSValue {
 	}
 	public void setModuli(int[] moduli) {
 		this._moduli = moduli;
-		try {
-			init(_value, this._moduli, false);
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (OutOfRangeException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	public int[] getResidues() {
 		return _residues;
@@ -58,7 +49,7 @@ public class RNSValue {
 	}
 	
 	// ------- Public functions -------
-	public void init(int value, int[] moduli, boolean debugEnabled) throws NumberFormatException, OutOfRangeException,Exception
+	public void init(int value, int[] moduli, boolean debugEnabled) throws OutOfRangeException,Exception
 	{	
 		if(debugEnabled)
 		{
@@ -104,9 +95,6 @@ public class RNSValue {
 		catch (OutOfRangeException oore) {
 			throw oore;
 		}
-		catch (NumberFormatException nfe) {
-			throw nfe;
-		}
 	}
 	
 	// ------- Private functions -------
@@ -141,14 +129,14 @@ public class RNSValue {
 		int len = moduli.length;
 		int[] residue = new int[len];
 		
-		String conversionStep = "Converting " + value + "(bin) to RNS" + Arrays.toString(moduli);
+		String conversionStep = "Converting " + value + " to RNS" + Arrays.toString(moduli);
 		
 		for(int i= 0 ; i < len ; ++i)
 		{
 			residue[i] = value % moduli[i];
-			conversionStep += "\nResidue" + i + ": " + value + "(bin)%" + moduli[i] + " = " + residue[i]; 
+			conversionStep += "\nResidue" + i + ": " + value + "%" + moduli[i] + " = " + residue[i]; 
 		}
-		conversionStep += "\n\nFinally, " + value + "(bin) in RNS" + Arrays.toString(moduli) + " = " + Arrays.toString(residue); 
+		conversionStep += "\n\nFinally, " + value + " in RNS" + Arrays.toString(moduli) + " = " + Arrays.toString(residue); 
 		
 		setModuli(moduli);
 		setResidues(residue);

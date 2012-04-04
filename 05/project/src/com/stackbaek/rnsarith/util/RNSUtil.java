@@ -2,7 +2,9 @@ package com.stackbaek.rnsarith.util;
 
 import java.util.Arrays;
 
+import com.stackbaek.rnsarith.domain.MRSValue;
 import com.stackbaek.rnsarith.domain.RNSValue;
+import com.stackbaek.rnsarith.domain.exception.ResidueNumberSystemMismatchException;
 import com.stackbaek.rnsarith.util.exception.UnexpectedNumberException;
 
 
@@ -17,7 +19,7 @@ public class RNSUtil {
 	public static final String RNS_OPERATION_SUBTRACT = "rnsOperationSubtract";
 	public static final String RNS_OPERATION_MULTIPLY = "rnsOperationMultiply";
 	
-	public static boolean validateModuli(int[] moduli, boolean debugEnabled)
+	public static boolean isValidModuli(int[] moduli, boolean debugEnabled)
 	{
 		if(debugEnabled)
 		{
@@ -30,7 +32,7 @@ public class RNSUtil {
 
 		if(len < 1)
 		{
-			System.out.println("There has to be more than 1 moduli");
+			System.out.println("There has to be at least 1 moduli");
 			return false;
 		}
 		
@@ -118,6 +120,52 @@ public class RNSUtil {
 	}
 	
 	// ------- Conversion Functions -------
+	public static MRSValue RNStoMRS(RNSValue value)
+	{
+		int[] moduli = value.getModuli();
+		//validate
+		if(!isValidModuli(value.getModuli(), false))
+		{
+			return null;
+		}
+
+		MRSValue result = new MRSValue(moduli);
+		
+		int len = moduli.length;
+		int[] residues = value.getResidues();
+		int[] digits = new int[len];
+		digits[len-1] = residues[len-1];
+		
+		
+		for(int i = len-1; i > 0 ; --i)
+		{
+			
+			try {
+				//subtract digits[i+1]
+				residues = residue_opertaion(residues, get_subtr_inv(residues, i), moduli, RNS_OPERATION_SUBTRACT);
+				//multiply by multiplicative inverse of moduli[i+1];
+				residues = residue_opertaion(residues, multi_inv_arry(moduli, i), moduli, RNS_OPERATION_MULTIPLY);
+				digits[i-1] = residues[i-1];
+			} catch (ResidueNumberSystemMismatchException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		result.setDigits(digits);
+		return result;
+	}
+	
+	private static int[] get_subtr_inv(int[] res, int index) //misnomer.... but...
+	{
+		int[] result = new int[res.length];
+		
+		for(int i = 0 ; i < index+1 ; ++i)
+		{
+			result[i] = res[index];
+		}
+		return result;
+	}
 	
 	public static int[] multi_inv_arry(int[] mod , int index) throws IndexOutOfBoundsException
 	{
@@ -126,9 +174,11 @@ public class RNSUtil {
 			throw new IndexOutOfBoundsException("index " + index + " is greater than the lenght of moduli array " + mod.length);
 			
 		}
-		int[] result = new int[index];
+		int len = mod.length;
+		int[] result = new int[len];
 		for(int i = 0 ; i < index ; ++i)
 		{
+			if(i < index)
 			result[i] = _multi_inv(mod[index], mod[i]);
 		}
 		return result;
@@ -151,55 +201,45 @@ public class RNSUtil {
 		return --result;
 	}
 	
-	public static String RNStoDec(RNSValue value)
-	{
-		String conversionString = "";
-		
-		
-		
-		return conversionString;
-	}
-	
 	// ------- Core Artirhmetic Functions ------
-	public static RNSValue rns_operation(RNSValue value1, RNSValue value2, String operation, boolean debugEnabled) throws MismatchResidueNumberSystemException
+	private static int[] residue_opertaion(int[] residue1, int[] residue2, int[] moduli, String operation) throws ResidueNumberSystemMismatchException
 	{
-		RNSValue result = new RNSValue();
-		int[] residue1 = value1.getResidues();
-		int[] residue2 = value2.getResidues();
-		int[] result_res = new int[residue1.length];
-		int[] mod = value1.getModuli();
-		
-		// are they in the same RNS system?
-		if(!Arrays.equals(value1.getModuli(), value2.getModuli()))
+		if(residue1.length != residue2.length)
 		{
-			throw new MismatchResidueNumberSystemException("Mismatching moduli: " + Arrays.toString(value1.getModuli()) + ", " + Arrays.toString(value2.getModuli()));
+			throw new ResidueNumberSystemMismatchException("Mismatching residue length: value1 has length of " + residue1.length + " and value2 has " + residue2.length);
 		}
-		// is there any inconsistencies?
-		else if(residue1.length != residue2.length)
+		if(residue1.length != moduli.length)
 		{
-			throw new MismatchResidueNumberSystemException("Mismatching residue length: value1 has length of " + residue1.length + " and value2 has " + residue2.length);
-		}
-		else if(residue1.length != mod.length)
-		{
-			throw new MismatchResidueNumberSystemException("Wrong residue/moduli: there are " + mod.length + "moduli and " + residue1.length + " residues");
+			throw new ResidueNumberSystemMismatchException("Wrong residue/moduli: there are " + moduli.length + "moduli and " + residue1.length + " residues");
 		}
 		
-		for(int i = 0 ; i < mod.length ; ++i)
+		int len = residue1.length;
+		if(len != residue2.length)
+		{
+			return null;
+		}
+		
+		int[] result = new int[len];
+		
+		for(int i = 0 ; i < len ; ++i)
 		{
 			if(operation.equals(RNS_OPERATION_ADD))
 			{
-				result_res[i] = (residue1[i] + residue2[i]) % mod[i];
+				result[i] = (residue1[i] + residue2[i]) % moduli[i];
 			}
 			else if(operation.equals(RNS_OPERATION_MULTIPLY))
 			{
-				result_res[i] = (residue1[i] * residue2[i]) % mod[i];
+				result[i] = (residue1[i] * residue2[i]) % moduli[i];
 			}
 			else if(operation.equals(RNS_OPERATION_SUBTRACT))
 			{
-				result_res[i] = (residue1[i] - residue2[i]) % mod[i];
+				result[i] = (residue1[i] - residue2[i]) % moduli[i];
+				if(result[i] < 0)
+				{
+					result[i] += moduli[i];
+				}
 			}
 		}
-		
 		
 		return result;
 	}
