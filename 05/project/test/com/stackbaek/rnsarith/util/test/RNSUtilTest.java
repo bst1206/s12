@@ -1,5 +1,7 @@
 package com.stackbaek.rnsarith.util.test;
 
+import java.util.Arrays;
+
 import javax.naming.TimeLimitExceededException;
 
 import junit.framework.TestCase;
@@ -14,6 +16,31 @@ public class RNSUtilTest extends TestCase {
 	public RNSUtilTest(String name)
 	{
 		super(name);
+	}
+	
+	public void test_workflow()
+	{
+		try {
+			int[] mod = generateValidModuli();
+			String s_mod = Arrays.toString(mod);
+			int range = 1;
+			for(int i = 0 ; i < mod.length ; ++i)
+			{
+				range *= mod[i];
+			}
+			int x = (int)(Math.random()*range*1.5);
+			int y = (int)(Math.random()*range*1.5);
+
+			System.out.println(s_mod.substring(1, s_mod.length()-1));
+			System.out.println("X= " + x);
+			System.out.println("Y= " + y);
+			System.out.println("X+Y= " + (x+y));
+			System.out.println("X*Y= " + (x*y));
+			System.out.println("X-Y= " + (x-y));
+		} catch (TimeLimitExceededException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void testValidateModuli() {
@@ -87,22 +114,6 @@ public class RNSUtilTest extends TestCase {
 			}
 				
 		}
-	}
-	
-	public void test()
-	{
-//		int[] mod = {16, 15, 7};
-//	
-//		int[] r1 = {8, 3, 0};
-//		int[] r2 = {7, 13, -1};
-//		int[] result1 = RNSUtil.RNS_multiply(r1, r2, mod);
-//		System.out.println(Arrays.toString(result1));
-//		int[] subtract = {result1[1], result1[1], -1};
-//		int[] result2 = RNSUtil.RNS_subtract(result1, subtract, mod);
-//		System.out.println(Arrays.toString(result2));
-//		
-//		int a = (15*15) % 16;
-//		System.out.println(a);
 	}
 	
 	

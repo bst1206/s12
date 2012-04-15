@@ -7,9 +7,10 @@ public class RNSUtilTestSuite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
+		suite.addTest(new RNSUtilTest("test_workflow"));
 //		suite.addTest(new RNSUtilTest("testValidateModuli"));
-		suite.addTest(new RNSUtilTest("testIsCoPrime"));
-		suite.addTest(new RNSUtilTest("testConverToRNS"));
+//		suite.addTest(new RNSUtilTest("testIsCoPrime"));
+//		suite.addTest(new RNSUtilTest("testConverToRNS"));
 		return suite;
 	}
 	

@@ -4,17 +4,10 @@ import java.util.Arrays;
 
 
 public class MRSValue {
-	private int _value;
 	private int[] _moduli;
 	private int[] _weights;
 	private int[] _digits;
 
-	public int getValue() {
-		return _value;
-	}
-	public void setValue(int value) {
-		this._value = value;
-	}
 	public int[] getWeights() {
 		return _weights;
 	}
@@ -64,7 +57,7 @@ public class MRSValue {
 	}
 	
 	// ------- private methods -------
-	private int _init(int[] moduli, boolean debugEnabled)
+	private void _init(int[] moduli, boolean debugEnabled)
 	{
 		//first validating moduli and residue
 		int len = moduli.length;
@@ -74,11 +67,11 @@ public class MRSValue {
 			if(debugEnabled)
 			{
 				System.out.println("There has to be at least one moduli");
-				return -1;
+				return;
 			}
 		}
 		setModuli(moduli);
-		return getValue();
+		return;
 	}
 	
 	//PRECONDITION: moduli has at least 1 item.

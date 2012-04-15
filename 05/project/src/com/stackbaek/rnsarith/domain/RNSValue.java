@@ -1,8 +1,12 @@
 package com.stackbaek.rnsarith.domain;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 import com.stackbaek.rnsarith.domain.exception.OutOfRangeException;
+import com.stackbaek.rnsarith.event.LogEvent;
+import com.stackbaek.rnsarith.eventListener.LogEventListener;
+import com.stackbaek.rnsarith.model.Model;
 
 /**
  * @author Baek
@@ -53,37 +57,37 @@ public class RNSValue {
 	{	
 		if(debugEnabled)
 		{
-			System.out.println("------------------------------------------------");
-			System.out.println("Converting " + value + " to RNS" + Arrays.toString(moduli));
+			fireLogEvent("------------------------------------------------");
+//			fireLogEvent("Converting " + value + " to RNS" + Arrays.toString(moduli));
 		}
 		
 		long range = 1;
-		long max;
-		long min;
+//		long max;
+//		long min;
 		
 		for(int i = 0 ; i < moduli.length; ++i)
 		{
 			range *= moduli[i];
 		}
 		
-		max = range/2 - 1 + (range % 2);
-		min = -range/2;
+//		max = range/2 - 1 + (range % 2);
+//		min = -range/2;
 		
 		//x
-		if(min > max)
-		{
-			System.out.println("??!?!?!?");
-		}
-		
+//		if(min > max)
+//		{
+//			fireLogEvent("??!?!?!?");
+//		}
+//		
 		if(debugEnabled)
 		{
-			System.out.println("The maximum range for this RNS"+Arrays.toString(moduli)
-					+ " is from " + min + " to " + max);
+			fireLogEvent("The maximum range for this RNS"+Arrays.toString(moduli)
+					+ " is from 0 to " + (range-1));
 		}
 		
 		
 		try{
-			if(_isInRange(max, min, value, debugEnabled))
+			if(_isInRange(range-1, 0, value, debugEnabled))
 			{
 				_initValues(value, moduli, debugEnabled);
 			}
@@ -104,7 +108,7 @@ public class RNSValue {
 		{
 			if(debugEnabled)
 			{
-				System.out.println("Overflow has occurred: " + value + ">" + max);
+				fireLogEvent("Overflow has occurred: " + value + ">" + max);
 			}
 			throw new OutOfRangeException("Overflow has occurred: " + value + ">" + max);
 		}
@@ -112,7 +116,7 @@ public class RNSValue {
 		{
 			if(debugEnabled)
 			{
-				System.out.println("Underflow has occurred: " + value + "<" + min);
+				fireLogEvent("Underflow has occurred: " + value + "<" + min);
 			}
 			throw new OutOfRangeException("Overflow has occurred: " + value + "<" + min);
 		}
@@ -145,8 +149,19 @@ public class RNSValue {
 		
 		if(debugEnabled)
 		{
-			System.out.println("RNSValue Init: {value:" + value + ", moduli:" + Arrays.toString(getModuli())
+			fireLogEvent(conversionStep);
+			fireLogEvent("RNSValue Init: {value:" + value + ", moduli:" + Arrays.toString(getModuli())
 					+ ", residue:" + Arrays.toString(getResidues()) + "}");
+		}
+	}
+	
+	private Model model = Model.getInstance();
+	private void fireLogEvent(String msg)
+	{
+		Iterator<LogEventListener> listeners = model.getLogEventListenerList().iterator();
+		while(listeners.hasNext())
+		{
+				listeners.next().handleLogEvent(new LogEvent(new Object(), msg));
 		}
 	}
 }

@@ -1,0 +1,96 @@
+
+CS/CE 6390 Spring 2012 Homework 2
+Eight questions, all count equally.
+
+Question 1 (DVMRP)
+==================
+Consider the attached figure, consisting of multiple subnets interconnected via 
+routers.  The unicast routing protocol finds the shortest path (least number of 
+hops) between any pair of nodes. 
+ 
+ (a) In Reverse Path Broadcasting (RPB), identify for each LAN, which router is 
+ the parent router of the LAN with respect to source S.  
+ 
+ (b) In Truncated Reverse Path Broadcast, indicate which LANs are leaf LANs, 
+ and which leaf LANs will be truncated.  
+ 
+ (c) In Reverse Path Multicasting (basically the full-blown DVMRP), identify 
+ which routers send Non-Membership Reports, and to whom do they send them.  
+ 
+ (d) After pruning, identify the LANS over which multicast messages from S are 
+ sent to group 
+
+
+Question 2 (DVMRP)
+==================
+Assume that you are implementing a multicast protocol, as similar to DVMRP as 
+possible, except that the underlying unicast protocol is not distance vector 
+routing. What part(s) of DVMRP have to be changed, and how?
+
+
+Question 3 (MOSPF)
+===================
+Consider again the figure from question 1 above. For MOSPF, show me the cache 
+entry that each router would build after the source begins to send multicast 
+messages to the group. 
+
+Question 4 (PIM)
+================
+Consider the shortest-path tree (SPT) for a source S and the rendezvous-point 
+tree (RPT). Show an example in which the UNION of the SPT of S and the 
+RPT form a loop, and how how PIM would behave under this situation (note that 
+the edges of both trees are "directed" edges, their direction is from root to 
+leaves).
+
+Question 5 (Interdomain Multicast)
+==================================
+
+Two parts, both count equally
+
+a) List all the steps necessary in Interdomain PIM for a receiver to be able to 
+receive data from a multicast source along the optimal path from the receiver 
+to the source.
+
+b) Assume a router will support both ASM (any source multicast) and also SSM 
+(source-specific multicast). Let X be a class D address in the range defined 
+for ASM, and Y be a class D address in the range defined for SSM.
+        (i) Assume the router receives a message of the form Join(*,X), what 
+        should it do with this message?
+        (ii) Assume the router receives a message of the form Join(*,Y), what 
+        should it do with this message?
+        (iii) Assume the router receives a multicast message with source S and 
+        destination X. What should it do with this message?
+        (iv) Assume the router receives a multicaset message with source S and 
+        destination Y. What should it do with this message?
+
+
+Question 6 (AODV)
+=================
+Assume that a node X, after not using the routing table entry for a destination 
+D, times out and removes D from its routing table (and hence forgets everything 	
+about D). In this case, is it possible for a routing loop to be formed? Argue 
+why yes or why no (base your answer only on what we have covered about AODV in 
+the slides).
+
+Question 7 (DSR)
+================
+Consider the DSR protocol. Assume that the destination sends back a RRPLY for 
+every single RREQ that is received, in an effort to inform the source of all 
+possible paths from the source to the destination (links are assumed to be 
+bidirectional). Show that even in this case it is possible that the optimum 
+(shortest) path from source to destination is never found.
+
+Question 8 (MPLS)
+=================
+Assume that we are doing MPLS over ATM switches (which are now "label-switching 
+routers",  i.e. routers that handle IP but use ATM hardware). Assume that we do 
+destination-based forwarding MPLS over these routers. 
+
+    a) Should label-merging or non-label-merging be used? Why?
+
+    b) Assume that ATM cells have a bit in the header, and that reassembly of 
+    packets is done as follows: all cells of a packet have 0 in this bit, 
+    except the last one, which has a 1 in this bit (i.e. a 1 in the bit marks 
+    the last cell in the packet) Under this reassembly method, is there 
+    something that switches can do so that label-merging can be used?
+
