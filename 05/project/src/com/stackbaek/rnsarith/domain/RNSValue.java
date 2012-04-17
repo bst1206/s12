@@ -118,7 +118,7 @@ public class RNSValue {
 			{
 				fireLogEvent("Underflow has occurred: " + value + "<" + min);
 			}
-			throw new OutOfRangeException("Overflow has occurred: " + value + "<" + min);
+			throw new OutOfRangeException("Underflow has occurred: " + value + "<" + min);
 		}
 		
 		return true;

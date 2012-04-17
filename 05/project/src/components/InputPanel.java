@@ -34,8 +34,10 @@ public class InputPanel extends JPanel implements ActionListener {
 		int[] moduli;
 		int x;
 		int y;
+		int z;
 		RNSValue RNS_x = new RNSValue();
 		RNSValue RNS_y = new RNSValue();
+		RNSValue RNS_z = new RNSValue();
 		try {
 			moduli = RNSUtil.parseModuliString(inputModuliTxtFld.getText());
 			x = Integer.parseInt(inputXTxtFld.getText());
@@ -48,6 +50,25 @@ public class InputPanel extends JPanel implements ActionListener {
 				//go on to calculation
 				RNSXTxtArea.setText(" " + Arrays.toString(RNS_x.getResidues()));
 				RNSYTxtArea.setText(" " + Arrays.toString(RNS_y.getResidues()));
+				
+				if(((String)(selectOperationCmbx.getSelectedItem())).equals(RNSUtil.RNS_OPERATION_ADD))
+				{
+					z = x+y;
+				}
+				else if(((String)(selectOperationCmbx.getSelectedItem())).equals(RNSUtil.RNS_OPERATION_MULTIPLY))
+				{
+					z = x*y;
+				}
+				else if(((String)(selectOperationCmbx.getSelectedItem())).equals(RNSUtil.RNS_OPERATION_SUBTRACT))
+				{
+					z = x-y;
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Incorrect operation selected");
+					return;
+				}
+				RNS_z.init(z, moduli, true);
 				fireRNSArithEvent(RNS_x, RNS_y, (String) selectOperationCmbx.getSelectedItem(), moduli);
 			}
 			else
