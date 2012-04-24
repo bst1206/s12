@@ -38,7 +38,6 @@ public class RNSUtilTest extends TestCase {
 			System.out.println("X*Y= " + (x*y));
 			System.out.println("X-Y= " + (x-y));
 		} catch (TimeLimitExceededException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
