@@ -125,7 +125,8 @@ public class RNSUtilTest extends TestCase {
 		{
 			for(int i = 0 ; i < len ; ++i)
 			{
-				moduli[i] = (int)(Math.random()*100+1);
+				moduli[i] = (int)(Math.random(
+						)*100+1);
 			}
 			if(RNSUtil.isValidModuli(moduli, false))
 			{

@@ -1,0 +1,32 @@
+
+Consider the following scenario, (the simple one described in the project sample):
+
+node 3 5 "this is a message from 3" 10 &
+node 5 8 "this is a message from 5" 20 &
+node 1 8 "this is a message from 1" 30 &
+node 2 2 &
+node 4 4 &
+node 6 6 &
+node 7 7 &
+node 8 8 &
+
+You obviously don't have time to type all of that by hand at the Unix prompt, especially if you are a slow typist
+
+So, create a new text file, for example, call it scenario.sh
+
+Put the above lines in the scenario.sh file
+
+Then at the Unix prompt, type
+
+sh scenario.sh
+
+That will cause a "shell" program to read the commands from scenario.sh and execute them, so this will case the 3 nodes above to be run in the background
+
+You can check that they are still running with the command ps -aef | grep youruserid
+
+You can have a different scenario files, one for each different scenario that you want to test your program with (I will post more later)
+
+At the end of each scenario, and before you run the next one, don't forget to delete by hand all the text files created by your code  since you have to start each scenario "afresh".
+
+
+
